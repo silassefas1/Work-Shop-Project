@@ -3,11 +3,21 @@ package com.silassefas.course.entities;
 import java.io.Serializable;
 import java.util.Objects;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
+@Entity // diz para o jpa que o user é uma entidade do modelo de dominio
+@Table(name = "tb_user")/*Renomeando para nao da conflito com a paravra reservada do banco*/
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
+	@Id //define id como chave primaria
+	@GeneratedValue(strategy = GenerationType.IDENTITY) //informa ao jpa que a chave é auto incrementada no banco
 	private Long id;
+	
 	private String name;
 	private String email;
 	private String phone;
