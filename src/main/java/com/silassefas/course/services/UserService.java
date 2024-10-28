@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.silassefas.course.entities.User;
 import com.silassefas.course.repositories.UserRepository;
+import com.silassefas.course.services.exceptions.ResourceNotFoundException;
 
 @Service // registra a classe como serviço do spring, permitindo a injeção de dependencia
 public class UserService {
@@ -21,7 +22,7 @@ public class UserService {
 	
 	public User findById(Long id) {
 		Optional<User> obj = repository.findById(id);
-		return obj.get();
+		return obj.orElseThrow(() -> new ResourceNotFoundException(id)) ;
 	}
 	
 	public User insert(User object) {
