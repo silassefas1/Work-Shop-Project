@@ -13,6 +13,8 @@ import com.silassefas.course.repositories.UserRepository;
 import com.silassefas.course.services.exceptions.DatabaseException;
 import com.silassefas.course.services.exceptions.ResourceNotFoundException;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @Service // registra a classe como serviço do spring, permitindo a injeção de dependencia
 public class UserService {
 	
@@ -44,9 +46,13 @@ public class UserService {
 	}
 	
 	public User update(Long id, User object) {
-		User entity = repository.getReferenceById(id);// instancia o usuario para ser monitorado pelo JPA
-		updateData(entity, object);
-		return repository.save(entity);
+		try {
+			User entity = repository.getReferenceById(id);// instancia o usuario para ser monitorado pelo JPA
+			updateData(entity, object);
+			return repository.save(entity);
+		} catch (EntityNotFoundException e) {
+			throw new ResourceNotFoundException(id);
+		}
 	}
 
 	private void updateData(User entity, User object) {
